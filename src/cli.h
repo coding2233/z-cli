@@ -2,6 +2,7 @@
 #define __CLI_H__
 
 #include <string>
+#include <iostream>
 
 class Cli
 {

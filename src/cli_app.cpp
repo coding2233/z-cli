@@ -3,13 +3,22 @@
 
 CliApp::CliApp(int argc,char * args[])
 {
-    std::string cli_name(args[1]);
-
-    if("excel" == cli_name)
+    if(argc > 1)
     {
-        ExcelCli excel_cli;
-        excel_cli.Run(argc,args);
+        std::string cli_name(args[1]);
+
+        if("excel" == cli_name)
+        {
+            ExcelCli excel_cli;
+            excel_cli.Run(argc,args);
+        }
     }
 }
 
 CliApp::~CliApp(){}
+
+
+void CliApp::Run(std::string read_line)
+{
+    std::cout<< "CliApp::Run "<< read_line <<std::endl;
+}

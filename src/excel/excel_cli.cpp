@@ -2,6 +2,6 @@
 
 void ExcelCli::Run(int argc,char* args[])
 {
-    
+    std::cout<< "ExcelCli"<<std::endl;
 }
 
