@@ -75,9 +75,13 @@ jobs:
         xmake f -p ${{ matrix.plat }} -y -v
         xmake -v -y
 
-    - uses: montudor/action-zip@v1
+    - name: Archive Release
+      uses: thedoctor0/zip-release@0.7.5
       with:
-        args: zip -qq -r zcli-${{ matrix.plat }}-${{ matrix.arch }}.zip build/${{ matrix.plat }}/${{ matrix.arch }}/release/
+        type: 'zip'
+        filename: 'zcli-${{ matrix.plat }}-${{ matrix.arch }}.zip'
+        directory: 'build/${{ matrix.plat }}/${{ matrix.arch }}/release/'
+        exclusions: '.exp .a .lib'
 
     # - uses: actboy168/action-zip@main
     #   id: zip
