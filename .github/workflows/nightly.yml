@@ -81,7 +81,7 @@ jobs:
         type: 'zip'
         filename: 'z-cli-${{ matrix.plat }}-${{ matrix.arch }}.zip'
         directory: 'build/${{ matrix.plat }}/${{ matrix.arch }}/release/'
-        exclusions: '.exp .a .lib'
+        exclusions: '*.exp *.a *.lib'
 
     # - uses: actboy168/action-zip@main
     #   id: zip
