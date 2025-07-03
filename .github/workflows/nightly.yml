@@ -79,7 +79,7 @@ jobs:
       uses: thedoctor0/zip-release@0.7.5
       with:
         type: 'zip'
-        filename: 'zcli-${{ matrix.plat }}-${{ matrix.arch }}.zip'
+        filename: 'z-cli-${{ matrix.plat }}-${{ matrix.arch }}.zip'
         directory: 'build/${{ matrix.plat }}/${{ matrix.arch }}/release/'
         exclusions: '.exp .a .lib'
 
@@ -99,4 +99,5 @@ jobs:
         name: nightly
         tag_name: nightly
         fail_on_unmatched_files: true
-        files: ${{  steps.zip.outputs.output }}
+        files: build/${{ matrix.plat }}/${{ matrix.arch }}/release/z-cli-${{ matrix.plat }}-${{ matrix.arch }}.zip
+        # files: ${{  steps.zip.outputs.output }}
