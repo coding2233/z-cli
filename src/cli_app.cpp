@@ -6,7 +6,6 @@ CliApp::CliApp(int argc,char * args[])
     if(argc > 1)
     {
         std::string cli_name(args[1]);
-
         if("excel" == cli_name)
         {
             ExcelCli excel_cli;
