@@ -72,18 +72,22 @@ jobs:
 
     - name: Build
       run: |
-        xmake f --toolchain=clang -p ${{ matrix.plat }} -y -v
+        xmake f -p ${{ matrix.plat }} -y -v
         xmake -v -y
 
-    - uses: actboy168/action-zip@main
-      id: zip
+    - uses: montudor/action-zip@v1
       with:
-        name: meteor-${{ matrix.plat }}-${{ matrix.arch }}
-        path: |
-          build/
-          !build/*/*.exp
-          !build/*/*.a
-          !build/*/*.lib
+        args: zip -qq -r zcli-${{ matrix.plat }}-${{ matrix.arch }}.zip build/${{ matrix.plat }}/${{ matrix.arch }}/release/
+
+    # - uses: actboy168/action-zip@main
+    #   id: zip
+    #   with:
+    #     name: meteor-${{ matrix.plat }}-${{ matrix.arch }}
+    #     path: |
+    #       build/
+    #       !build/*/*.exp
+    #       !build/*/*.a
+    #       !build/*/*.lib
           
     - uses: softprops/action-gh-release@v1
       with:
