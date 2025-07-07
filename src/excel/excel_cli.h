@@ -7,6 +7,8 @@ class ExcelCli:public Cli
 {
     public:
         void Run(int argc,char* args[]) override;
+        std::string GetName() override;
+        std::string GetHelp() override;
 };
 
 #endif
