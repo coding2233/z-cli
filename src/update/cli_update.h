@@ -1,0 +1,17 @@
+#ifndef __CLI_UPDATE_H__
+#define __CLI_UPDATE_H__ 
+
+#include "../cli.h"
+#include "../core/cli_core.h"
+
+class CliUpdate:public Cli
+{ 
+    public: 
+        std::string GetHelp() override
+        {
+            return "update";
+        }
+        bool Run(std::string line) override;
+};
+
+#endif

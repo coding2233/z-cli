@@ -2,6 +2,7 @@
 #define __CLI_APP_H__
 
 #include <map>
+#include <memory>
 #include <string>
 
 #include "cli.h"
@@ -11,10 +12,22 @@
 class CliApp
 {
     public:
-        CliApp(int argc,char* args[]);
+        CliApp();
         ~CliApp();
 
         void Run(std::string read_line);
+
+    private:
+        std::map<std::string,std::shared_ptr<Cli>> clis_;  
+
+        template<class T>
+        void AddCli(std::string name)
+        {
+            clis_.insert(std::make_pair(name,std::make_shared<T>()));
+        }
+
+        void AddClis();
+
 };
 
 #endif

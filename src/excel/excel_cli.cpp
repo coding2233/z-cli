@@ -1,17 +1,14 @@
 #include "excel_cli.h"
 
-  std::string ExcelCli::GetName()
-  {
-    return "excel";
-  }
-  
+
   std::string ExcelCli::GetHelp()
   {
     return "ExcelCli";
   }
 
-void ExcelCli::Run(int argc,char* args[])
+bool ExcelCli::Run(std::string line)
 {
     std::cout<< "ExcelCli"<<std::endl;
+    return false;
 }
 
