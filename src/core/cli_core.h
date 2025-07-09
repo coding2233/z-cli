@@ -1,6 +1,7 @@
 #ifndef __CLI_CORE_H__
 #define __CLI_CORE_H__
 
+#include <memory>
 #include <string>
 #include <iostream>
 
@@ -8,7 +9,9 @@
 
 class CliCore
 {
+private:
 public:
+    static CliCore GetCliCore();
     // Function to download a file using libcurl
     bool DownloadFile(const std::string& url, const std::string& outputPath);
 };

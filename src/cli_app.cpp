@@ -53,12 +53,12 @@ void CliApp::Run(std::string read_line)
     Run(action, args);
 }
 
- void CliApp::Run(std::string action,std::vector<std::string> agrs)
+ void CliApp::Run(std::string action,std::vector<std::string> args)
  {
     auto cliIter = clis_.find(action);
     if (cliIter != clis_.end()) 
     {
-        
+        cliIter->second->Run(args);
     }
  }
 

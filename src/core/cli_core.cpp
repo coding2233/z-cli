@@ -1,8 +1,15 @@
 #include <curl/curl.h>
 #include <cstdio> // For fopen, fwrite, fclose
+#include <memory>
 
 #include "cli_core.h"
 
+CliCore CliCore::GetCliCore()
+{
+    static CliCore cliCore;
+    return cliCore;
+}
+ 
 // Callback function to write received data into a file
 static size_t write_callback(void *ptr, size_t size, size_t nmemb, void *stream) {
     size_t written = fwrite(ptr, size, nmemb, (FILE*)stream);
