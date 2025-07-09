@@ -6,7 +6,7 @@
 class ExcelCli:public Cli
 {
     public:
-        bool Run(std::string line) override;
+        bool Run(std::vector<std::string> args) override;
         std::string GetHelp() override;
 };
 

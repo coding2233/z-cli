@@ -6,7 +6,7 @@
     return "ExcelCli";
   }
 
-bool ExcelCli::Run(std::string line)
+bool ExcelCli::Run(std::vector<std::string> args)
 {
     std::cout<< "ExcelCli"<<std::endl;
     return false;

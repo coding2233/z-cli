@@ -3,11 +3,12 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 class Cli
 {
     public:
-        virtual bool Run(std::string line) = 0;
+        virtual bool Run(std::vector<std::string> args) = 0;
         virtual std::string GetHelp() = 0;
 };
 

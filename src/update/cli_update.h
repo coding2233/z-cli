@@ -11,7 +11,7 @@ class CliUpdate:public Cli
         {
             return "update";
         }
-        bool Run(std::string line) override;
+        bool Run(std::vector<std::string> args) override;
 };
 
 #endif

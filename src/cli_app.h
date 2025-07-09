@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "cli.h"
 
@@ -16,6 +17,7 @@ class CliApp
         ~CliApp();
 
         void Run(std::string read_line);
+        void Run(std::string action,std::vector<std::string> agrs);
 
     private:
         std::map<std::string,std::shared_ptr<Cli>> clis_;  

@@ -1,15 +1,19 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "cli_app.h"
 
 int main(int argc,char* args[])
 {
     CliApp cli_app;
-    std::string read_line;
+
+    std::string action;
+    std::vector<std::string> action_args;
   
     if(argc < 2)
     {
+        std::string read_line;
         while(true)
         {
             std::cout<<"z-cli> ";
@@ -24,15 +28,12 @@ int main(int argc,char* args[])
     }
     else 
     {
-        for(int i = 1;i < argc;i++)
+        action = args[1];
+        for(int i = 2;i < argc;i++)
         {
-            read_line.append(args[i]);
-            if (i< argc-1) 
-            {
-                read_line.append(" ");
-            }
+            action_args.push_back(args[i]);
         }
-        cli_app.Run(read_line);
+        cli_app.Run(action,action_args);
     }
    
     return 0;
