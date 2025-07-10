@@ -1,5 +1,7 @@
 #include "cli_app.h"
 #include "excel/excel_cli.h"
+#include "spdlog/spdlog.h"
+#include "update/update_cli.h"
 #include <string>
 #include <vector>
 
@@ -50,6 +52,7 @@ void CliApp::Run(std::string read_line)
         }
     }
     //执行
+    SPDLOG_INFO("CliApp::Run action:{}",action);
     Run(action, args);
 }
 
@@ -65,4 +68,5 @@ void CliApp::Run(std::string read_line)
 void CliApp::AddClis()
 {
     AddCli<ExcelCli>("excel");
+    AddCli<UpdateCli>("update");
 }

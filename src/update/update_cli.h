@@ -4,7 +4,7 @@
 #include "../cli.h"
 #include "../core/cli_core.h"
 
-class CliUpdate:public Cli
+class UpdateCli:public Cli
 { 
     public: 
         std::string GetHelp() override

@@ -1,7 +1,10 @@
-#include "cli_update.h"
+#include "update_cli.h"
+#include "spdlog/spdlog.h"
 
-bool CliUpdate::Run(std::vector<std::string> args) 
+bool UpdateCli::Run(std::vector<std::string> args) 
 {
+    SPDLOG_INFO("UpdateCli::Run");
+
     // std::string url = "http://speedtest.tele2.net/1MB.zip";
     std::string url = "https://github.com/coding2233/z-cli/releases/download/nightly/";
     std::string file_name;
@@ -13,7 +16,7 @@ bool CliUpdate::Run(std::vector<std::string> args)
     file_name = "z-cli-linux-x86_64.zip";
 #endif
     url.append(file_name);
-    SPDLOG_DEBUG("url: {} file_name:{}",url,file_name);
+    SPDLOG_INFO("url: {} file_name:{}",url,file_name);
     CliCore::GetCliCore().DownloadFile(url,file_name);
 
     return false;
