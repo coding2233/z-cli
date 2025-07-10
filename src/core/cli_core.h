@@ -15,7 +15,7 @@ private:
 public:
     static CliCore GetCliCore();
     // Function to download a file using libcurl
-    bool DownloadFile(const std::string& url, const std::string& outputPath);
+    int DownloadFile(const std::string& url, const std::string& outputPath);
 };
 
 #endif

@@ -9,15 +9,16 @@ bool UpdateCli::Run(std::vector<std::string> args)
     std::string url = "https://github.com/coding2233/z-cli/releases/download/nightly/";
     std::string file_name;
 #if _WIN32
-    file_name = "z-cli-windows-x86_64.zip";
+    file_name = "z-cli-windows-x64.zip";
 #elif __APPLE__
     file_name = "z-cli-macosx-arm64.zip";
 #elif __linux__
     file_name = "z-cli-linux-x86_64.zip";
 #endif
     url.append(file_name);
-    SPDLOG_INFO("url: {} file_name:{}",url,file_name);
-    CliCore::GetCliCore().DownloadFile(url,file_name);
+    SPDLOG_INFO("Download url:{}",url,file_name);
+    int ret = CliCore::GetCliCore().DownloadFile(url,file_name);
+    SPDLOG_INFO("Download result:{} file_name:{}",ret,file_name);
 
     return false;
 }
