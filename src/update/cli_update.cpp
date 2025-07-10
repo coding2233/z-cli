@@ -13,7 +13,7 @@ bool CliUpdate::Run(std::vector<std::string> args)
     file_name = "z-cli-linux-x86_64.zip";
 #endif
     url.append(file_name);
-
+    SPDLOG_DEBUG("url: {} file_name:{}",url,file_name);
     CliCore::GetCliCore().DownloadFile(url,file_name);
 
     return false;

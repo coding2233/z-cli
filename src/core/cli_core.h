@@ -5,7 +5,9 @@
 #include <string>
 #include <iostream>
 
-// #include "spdlog/spdlog.h"
+#define FMT_UNICODE 0
+
+#include "spdlog/spdlog.h"
 
 class CliCore
 {
