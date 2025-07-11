@@ -1,8 +1,8 @@
+
 add_requires("libcurl")
 
 target("z-core")
     set_kind("static")
-    set_languages("c++17")
     add_includedirs("spdlog-1.15.3/include",{public=true})
     add_includedirs("vfspp/include",{public=true})
     add_includedirs("vfspp/vendor/miniz-cpp",{public=true})

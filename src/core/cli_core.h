@@ -8,6 +8,7 @@
 #define FMT_UNICODE 0
 
 #include "spdlog/spdlog.h"
+#include "vfspp/VFS.h"
 
 class CliCore
 {

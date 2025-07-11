@@ -1,3 +1,5 @@
+set_languages("cxx17","c17")
+
 includes("src/*")
 
 target("z-cli")
