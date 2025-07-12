@@ -1,5 +1,6 @@
 #include "update_cli.h"
 #include "spdlog/spdlog.h"
+#include <algorithm>
 
 
 
@@ -29,12 +30,19 @@ bool UpdateCli::Run(std::vector<std::string> args)
         update_fs->Initialize();
         auto file_list = update_fs->FileList();
 
+       
+        //挂载下载的文件到/update下
+        CliCore::GetCliCore().GetVirtualFileSystem()->AddFileSystem("/update",std::move(update_fs));
+
+        //复制/update -> /app下进行更新
         for(auto iter = file_list.begin();iter!= file_list.end();iter++)
         {
             SPDLOG_INFO("{}",iter->first);
+
+            std::string src = "/update/" + iter->first;
+            std::string dest = "/app/"+iter->first;
+            CliCore::GetCliCore().CopyFile(src, dest);
         }
-        
-        CliCore::GetCliCore().GetVirtualFileSystem()->AddFileSystem("/update", update_fs);
     }
 
     return false;

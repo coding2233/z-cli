@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "cli_core.h"
+#include "spdlog/spdlog.h"
 #include "vfspp/IFileSystem.h"
 
 CliCore CliCore::GetCliCore()
@@ -70,6 +71,38 @@ VirtualFileSystemPtr CliCore::GetVirtualFileSystem()
         vfs_->AddFileSystem("/user", std::move(userFS));  
     }
     return vfs_;
+}
+
+bool CliCore::CopyFile(std::string &src,std::string dest)
+{
+    auto vfs = GetVirtualFileSystem();
+    // 流式复制大文件  
+    auto sourceFile = vfs->OpenFile(FileInfo(src), IFile::FileMode::Read);  
+    auto destFile = vfs->OpenFile(FileInfo(dest), IFile::FileMode::Write); 
+    if (sourceFile && destFile && sourceFile->IsOpened() && destFile->IsOpened()) 
+    {  
+        const size_t bufferSize = 4096; // 4KB 缓冲区  
+        std::vector<uint8_t> buffer(bufferSize);  
+          
+        uint64_t totalCopied = 0;  
+        uint64_t bytesRead;  
+          
+        while ((bytesRead = sourceFile->Read(buffer.data(), bufferSize)) > 0) {  
+            uint64_t bytesWritten = destFile->Write(buffer.data(), bytesRead);  
+            if (bytesWritten != bytesRead) {  
+                SPDLOG_ERROR("Copy file error.");
+                break;  
+            }  
+            totalCopied += bytesWritten;  
+        }  
+          
+        sourceFile->Close();  
+        destFile->Close();  
+        
+        SPDLOG_INFO("CopyFile {}->{} size:{}",src,dest,totalCopied);
+        return true;
+    }
+    return false;
 }
 
 // 获取不同系统的用户目录路径  

@@ -6,7 +6,7 @@
 
 int main(int argc,char* args[])
 {
-    CliApp cli_app;
+    CliApp cli_app(args[0]);
 
     std::string action;
     std::vector<std::string> action_args;

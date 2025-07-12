@@ -13,7 +13,7 @@
 class CliApp
 {
     public:
-        CliApp();
+        CliApp(std::string app_path);
         ~CliApp();
 
         void Run(std::string read_line);

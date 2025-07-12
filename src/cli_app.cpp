@@ -1,24 +1,25 @@
 #include "cli_app.h"
+#include "core/cli_core.h"
 #include "excel/excel_cli.h"
 #include "spdlog/spdlog.h"
 #include "update/update_cli.h"
 #include <string>
 #include <vector>
 
-CliApp::CliApp()
+CliApp::CliApp(std::string app_path)
 {
-    AddClis();
+    // 获取当前程序的完整路径  
+    std::filesystem::path executable_path = std::filesystem::canonical(app_path);  
+    // 获取程序所在的目录  
+    std::string app_directory = executable_path.parent_path().string();  
+    // 创建本地文件系统，指向程序所在目录  
+    auto app_fs = std::make_unique<NativeFileSystem>(app_directory);  
+    app_fs->Initialize();  
+    //挂载App路径
+    CliCore::GetCliCore().GetVirtualFileSystem()->AddFileSystem("/app", std::move(app_fs));
 
-    // // 执行命令
-    // if(argc > 1)
-    // {
-    //     std::string cli_name(args[1]);
-    //     if("excel" == cli_name)
-    //     {
-    //         ExcelCli excel_cli;
-    //         excel_cli.Run(argc,args);
-    //     }
-    // }
+    //添加更多的执行
+    AddClis();
 }
 
 CliApp::~CliApp(){}

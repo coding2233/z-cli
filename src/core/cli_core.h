@@ -24,6 +24,7 @@ public:
     int DownloadFile(const std::string& url, const std::string& outputPath);
 
     VirtualFileSystemPtr GetVirtualFileSystem();
+    bool CopyFile(std::string &src,std::string dest);
 };
 
 #endif
