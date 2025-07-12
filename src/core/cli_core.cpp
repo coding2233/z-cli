@@ -4,6 +4,7 @@
 
 #include "cli_core.h"
 #include "spdlog/spdlog.h"
+#include "vfspp/IFile.h"
 #include "vfspp/IFileSystem.h"
 
 CliCore CliCore::GetCliCore()
@@ -65,21 +66,28 @@ VirtualFileSystemPtr CliCore::GetVirtualFileSystem()
         vfs_ = std::make_shared<VirtualFileSystem>();
 
         // 1. 映射用户主目录  
-        std::string userDir = GetUserDirectory();  
+        std::string userDir = GetUserDirectory().append(".z-cli");  
         auto userFS = std::make_unique<NativeFileSystem>(userDir);  
         userFS->Initialize();  
-        vfs_->AddFileSystem("/user", std::move(userFS));  
+        vfs_->AddFileSystem("/", std::move(userFS));  
     }
     return vfs_;
 }
 
 bool CliCore::CopyFile(std::string &src,std::string dest)
 {
+    SPDLOG_INFO("CopyFile {} -> {}",src,dest);
     auto vfs = GetVirtualFileSystem();
     // 流式复制大文件  
     auto sourceFile = vfs->OpenFile(FileInfo(src), IFile::FileMode::Read);  
     auto destFile = vfs->OpenFile(FileInfo(dest), IFile::FileMode::Write); 
-    if (sourceFile && destFile && sourceFile->IsOpened() && destFile->IsOpened()) 
+    
+    bool source_valid = sourceFile && sourceFile->IsOpened();
+    bool dest_vaild = destFile && destFile->IsOpened();
+
+    
+
+    if (source_valid && dest_vaild) 
     {  
         const size_t bufferSize = 4096; // 4KB 缓冲区  
         std::vector<uint8_t> buffer(bufferSize);  
@@ -89,7 +97,8 @@ bool CliCore::CopyFile(std::string &src,std::string dest)
           
         while ((bytesRead = sourceFile->Read(buffer.data(), bufferSize)) > 0) {  
             uint64_t bytesWritten = destFile->Write(buffer.data(), bytesRead);  
-            if (bytesWritten != bytesRead) {  
+            if (bytesWritten != bytesRead) 
+            {  
                 SPDLOG_ERROR("Copy file error.");
                 break;  
             }  
@@ -101,6 +110,10 @@ bool CliCore::CopyFile(std::string &src,std::string dest)
         
         SPDLOG_INFO("CopyFile {}->{} size:{}",src,dest,totalCopied);
         return true;
+    }
+    else 
+    {
+        SPDLOG_ERROR("vfs open file error. source_valid:{} dest_vaild:{}",source_valid,dest_vaild);
     }
     return false;
 }

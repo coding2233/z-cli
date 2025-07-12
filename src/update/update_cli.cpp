@@ -39,8 +39,8 @@ bool UpdateCli::Run(std::vector<std::string> args)
         {
             SPDLOG_INFO("{}",iter->first);
 
-            std::string src = "/update/" + iter->first;
-            std::string dest = "/app/"+iter->first;
+            std::string src = "/update" + iter->first;
+            std::string dest = "/app"+iter->first;
             CliCore::GetCliCore().CopyFile(src, dest);
         }
     }
