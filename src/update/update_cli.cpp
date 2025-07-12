@@ -1,6 +1,8 @@
 #include "update_cli.h"
 #include "spdlog/spdlog.h"
 
+
+
 bool UpdateCli::Run(std::vector<std::string> args) 
 {
     SPDLOG_INFO("UpdateCli::Run");
@@ -19,6 +21,21 @@ bool UpdateCli::Run(std::vector<std::string> args)
     SPDLOG_INFO("Download url:{}",url,file_name);
     int ret = CliCore::GetCliCore().DownloadFile(url,file_name);
     SPDLOG_INFO("Download result:{} file_name:{}",ret,file_name);
+    
+    if (ret == 0) 
+    {
+        
+        IFileSystemPtr update_fs = std::make_unique<ZipFileSystem>(file_name);
+        update_fs->Initialize();
+        auto file_list = update_fs->FileList();
+
+        for(auto iter = file_list.begin();iter!= file_list.end();iter++)
+        {
+            SPDLOG_INFO("{}",iter->first);
+        }
+        
+        CliCore::GetCliCore().GetVirtualFileSystem()->AddFileSystem("/update", update_fs);
+    }
 
     return false;
 }

@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "cli_core.h"
+#include "vfspp/IFileSystem.h"
 
 CliCore CliCore::GetCliCore()
 {
@@ -55,3 +56,32 @@ int CliCore::DownloadFile(const std::string& url, const std::string& outputPath)
     curl_easy_cleanup(curl);
     return 0;
 }
+
+VirtualFileSystemPtr CliCore::GetVirtualFileSystem()
+{
+    if (!vfs_) 
+    {
+        vfs_ = std::make_shared<VirtualFileSystem>();
+
+        // 1. 映射用户主目录  
+        std::string userDir = GetUserDirectory();  
+        auto userFS = std::make_unique<NativeFileSystem>(userDir);  
+        userFS->Initialize();  
+        vfs_->AddFileSystem("/user", std::move(userFS));  
+    }
+    return vfs_;
+}
+
+// 获取不同系统的用户目录路径  
+std::string CliCore::GetUserDirectory() {  
+    #ifdef _WIN32  
+        // Windows: C:\Users\username  
+        return std::string(getenv("USERPROFILE"));  
+    #elif __APPLE__  
+        // macOS: /Users/username  
+        return std::string(getenv("HOME"));  
+    #else  
+        // Linux: /home/username  
+        return std::string(getenv("HOME"));  
+    #endif  
+}  
