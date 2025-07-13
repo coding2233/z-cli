@@ -6,6 +6,16 @@
 #include <iostream>
 
 #define FMT_UNICODE 0
+#define VFSPP_ENABLE_MULTITHREADING
+
+//取消系统的宏，避免与vfs冲突
+#ifdef min  
+#undef min  
+#endif  
+#ifdef max    
+#undef max  
+#endif
+
 
 #include "spdlog/spdlog.h"
 #include "vfspp/VFS.h"
@@ -24,7 +34,7 @@ public:
     int DownloadFile(const std::string& url, const std::string& outputPath);
 
     VirtualFileSystemPtr GetVirtualFileSystem();
-    bool CopyFile(std::string &src,std::string dest);
+    bool VFSCopyFile(std::string &src,std::string dest);
 };
 
 #endif

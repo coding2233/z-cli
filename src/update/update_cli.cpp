@@ -41,7 +41,7 @@ bool UpdateCli::Run(std::vector<std::string> args)
 
             std::string src = "/update" + iter->first;
             std::string dest = "/app"+iter->first;
-            CliCore::GetCliCore().CopyFile(src, dest);
+            CliCore::GetCliCore().VFSCopyFile(src, dest);
         }
     }
 

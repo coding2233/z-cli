@@ -74,7 +74,7 @@ VirtualFileSystemPtr CliCore::GetVirtualFileSystem()
     return vfs_;
 }
 
-bool CliCore::CopyFile(std::string &src,std::string dest)
+bool CliCore::VFSCopyFile(std::string &src,std::string dest)
 {
     SPDLOG_INFO("CopyFile {} -> {}",src,dest);
     auto vfs = GetVirtualFileSystem();
