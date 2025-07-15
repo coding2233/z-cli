@@ -7,7 +7,7 @@
 #include "vfspp/IFile.h"
 #include "vfspp/IFileSystem.h"
 
-CliCore CliCore::GetCliCore()
+CliCore& CliCore::GetCliCore()
 {
     static CliCore cliCore;
     return cliCore;
@@ -66,11 +66,18 @@ VirtualFileSystemPtr CliCore::GetVirtualFileSystem()
         vfs_ = std::make_shared<VirtualFileSystem>();
 
         // 1. 映射用户主目录  
-        std::string userDir = GetUserDirectory().append(".z-cli");  
+        std::string userDir = GetUserDirectory();//.append(".z-cli");
+        SPDLOG_INFO("userDir:{}",userDir);
+        
         auto userFS = std::make_unique<NativeFileSystem>(userDir);  
         userFS->Initialize();  
         vfs_->AddFileSystem("/", std::move(userFS));  
-    }
+
+        //内存，用于临时文件
+        auto memFS = std::make_unique<MemoryFileSystem>();  
+        memFS->Initialize();  
+        vfs_->AddFileSystem("/tmp", std::move(memFS));
+    }   
     return vfs_;
 }
 
@@ -78,16 +85,18 @@ bool CliCore::VFSCopyFile(std::string &src,std::string dest)
 {
     SPDLOG_INFO("CopyFile {} -> {}",src,dest);
     auto vfs = GetVirtualFileSystem();
+
+    SPDLOG_INFO("VFSCopyFile Check-VFS {} {} {} {}",vfs->IsAliasRegistered("/"),vfs->IsAliasRegistered("/tmp"),vfs->IsAliasRegistered("/app"),vfs->IsAliasRegistered("/update"));
+
     // 流式复制大文件  
     auto sourceFile = vfs->OpenFile(FileInfo(src), IFile::FileMode::Read);  
     auto destFile = vfs->OpenFile(FileInfo(dest), IFile::FileMode::Write); 
     
     bool source_valid = sourceFile && sourceFile->IsOpened();
-    bool dest_vaild = destFile && destFile->IsOpened();
+    bool dest_valid = destFile && destFile->IsOpened();
 
-    
 
-    if (source_valid && dest_vaild) 
+    if (source_valid && dest_valid) 
     {  
         const size_t bufferSize = 4096; // 4KB 缓冲区  
         std::vector<uint8_t> buffer(bufferSize);  
@@ -113,7 +122,7 @@ bool CliCore::VFSCopyFile(std::string &src,std::string dest)
     }
     else 
     {
-        SPDLOG_ERROR("vfs open file error. source_valid:{} dest_vaild:{}",source_valid,dest_vaild);
+        SPDLOG_ERROR("vfs open file error. source_valid:{} dest_vaild:{}",source_valid,dest_valid);
     }
     return false;
 }

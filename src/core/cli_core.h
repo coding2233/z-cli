@@ -29,7 +29,7 @@ private:
     VirtualFileSystemPtr vfs_;
     std::string GetUserDirectory();
 public:
-    static CliCore GetCliCore();
+    static CliCore& GetCliCore();
     // Function to download a file using libcurl
     int DownloadFile(const std::string& url, const std::string& outputPath);
 
