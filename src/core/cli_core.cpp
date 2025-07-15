@@ -1,5 +1,6 @@
 #include <curl/curl.h>
 #include <cstdio> // For fopen, fwrite, fclose
+#include <filesystem>
 #include <memory>
 
 #include "cli_core.h"
@@ -66,9 +67,13 @@ VirtualFileSystemPtr CliCore::GetVirtualFileSystem()
         vfs_ = std::make_shared<VirtualFileSystem>();
 
         // 1. 映射用户主目录  
-        std::string userDir = GetUserDirectory();//.append(".z-cli");
+        std::string userDir = GetUserDirectory().append(".z-cli");
         SPDLOG_INFO("userDir:{}",userDir);
-        
+        if(!std::filesystem::exists(userDir))
+        {
+            SPDLOG_INFO("create_directory: {}",userDir);
+            std::filesystem::create_directory(userDir);
+        }
         auto userFS = std::make_unique<NativeFileSystem>(userDir);  
         userFS->Initialize();  
         vfs_->AddFileSystem("/", std::move(userFS));  
@@ -117,7 +122,7 @@ bool CliCore::VFSCopyFile(std::string &src,std::string dest)
         sourceFile->Close();  
         destFile->Close();  
         
-        SPDLOG_INFO("CopyFile {}->{} size:{}",src,dest,totalCopied);
+        SPDLOG_INFO("CopyFile success. {} -> {} size:{}",src,dest,totalCopied);
         return true;
     }
     else 
@@ -131,12 +136,12 @@ bool CliCore::VFSCopyFile(std::string &src,std::string dest)
 std::string CliCore::GetUserDirectory() {  
     #ifdef _WIN32  
         // Windows: C:\Users\username  
-        return std::string(getenv("USERPROFILE"));  
+        return std::string(getenv("USERPROFILE"))+"\\";  
     #elif __APPLE__  
         // macOS: /Users/username  
-        return std::string(getenv("HOME"));  
+        return std::string(getenv("HOME"))+"/";  
     #else  
         // Linux: /home/username  
-        return std::string(getenv("HOME"));  
+        return std::string(getenv("HOME"))+"/";  
     #endif  
 }  
