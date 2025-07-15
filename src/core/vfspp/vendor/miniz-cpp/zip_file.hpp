@@ -5103,13 +5103,13 @@ static inline tm safe_localtime(const time_t &t)
 #endif
 }
 
-static inline std::size_t write_callback(void *opaque, std::uint64_t file_ofs, const void *pBuf, std::size_t n)
-{
-    auto buffer = static_cast<std::vector<char> *>(opaque);
-    
+    inline static size_t write_callback(void *pOpaque, mz_uint64 file_ofs, const void *pBuf, size_t n)
+    {
+        auto buffer = static_cast<std::vector<uint8_t> *>(pOpaque);
+
     if(file_ofs + n > buffer->size())
     {
-        auto new_size = static_cast<std::vector<char>::size_type>(file_ofs + n);
+        auto new_size = static_cast<std::vector<uint8_t>::size_type>(file_ofs + n);
         buffer->resize(new_size);
     }
 
