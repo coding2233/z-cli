@@ -12,6 +12,9 @@ class UpdateCli:public Cli
             return "update";
         }
         bool Run(std::vector<std::string> args) override;
+    private:
+        void Download();
+        void Update(std::string zip_file,std::string bin_path);
 };
 
 #endif

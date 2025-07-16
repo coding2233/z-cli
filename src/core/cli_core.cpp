@@ -67,7 +67,7 @@ VirtualFileSystemPtr CliCore::GetVirtualFileSystem()
         vfs_ = std::make_shared<VirtualFileSystem>();
 
         // 1. 映射用户主目录  
-        std::string userDir = GetUserDirectory().append(".z-cli");
+        std::string userDir = GetUserDirectory();
         SPDLOG_INFO("userDir:{}",userDir);
         if(!std::filesystem::exists(userDir))
         {
@@ -84,6 +84,18 @@ VirtualFileSystemPtr CliCore::GetVirtualFileSystem()
         vfs_->AddFileSystem("/tmp", std::move(memFS));
     }   
     return vfs_;
+}
+
+void CliCore::AddNativeFileSystem(std::string &alias, std::string &path)
+{
+    if(!std::filesystem::exists(path))
+    {
+        SPDLOG_INFO("create_directory: {}",path);
+        std::filesystem::create_directory(path);
+    }
+    auto native_fs = std::make_unique<NativeFileSystem>(path);  
+    native_fs->Initialize();  
+    CliCore::GetVirtualFileSystem()->AddFileSystem(alias, std::move(native_fs));  
 }
 
 bool CliCore::VFSCopyFile(std::string &src,std::string dest)
@@ -132,16 +144,29 @@ bool CliCore::VFSCopyFile(std::string &src,std::string dest)
     return false;
 }
 
+
+
 // 获取不同系统的用户目录路径  
-std::string CliCore::GetUserDirectory() {  
+std::string CliCore::GetUserDirectory() 
+{  
     #ifdef _WIN32  
         // Windows: C:\Users\username  
-        return std::string(getenv("USERPROFILE"))+"\\";  
+        return std::string(getenv("USERPROFILE"))+"\\.z-cli";  
     #elif __APPLE__  
         // macOS: /Users/username  
-        return std::string(getenv("HOME"))+"/";  
+        return std::string(getenv("HOME"))+"/.z-cli";  
     #else  
         // Linux: /home/username  
-        return std::string(getenv("HOME"))+"/";  
+        return std::string(getenv("HOME"))+"/.z-cli";  
     #endif  
 }  
+
+
+void CliCore::SetAppPath(std::string path)
+{
+    app_path_ = path;
+}
+std::string CliCore::GetAppPath()
+{
+    return app_path_;
+}

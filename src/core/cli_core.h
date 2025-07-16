@@ -27,14 +27,20 @@ class CliCore
 {
 private:
     VirtualFileSystemPtr vfs_;
-    std::string GetUserDirectory();
+    std::string app_path_;
 public:
     static CliCore& GetCliCore();
     // Function to download a file using libcurl
     int DownloadFile(const std::string& url, const std::string& outputPath);
 
+    std::string GetUserDirectory();
+    void SetAppPath(std::string path);
+    std::string GetAppPath();
+
     VirtualFileSystemPtr GetVirtualFileSystem();
     bool VFSCopyFile(std::string &src,std::string dest);
+
+    void AddNativeFileSystem(std::string &alias, std::string &path);
 };
 
 #endif

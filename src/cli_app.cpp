@@ -14,6 +14,7 @@ CliApp::CliApp(std::string app_path)
     std::string app_directory = executable_path.parent_path().string();  
     SPDLOG_INFO("app_path: {}",app_path);
     SPDLOG_INFO("app_directory: {}",app_directory);
+    CliCore::GetCliCore().SetAppPath(app_directory);
     // 创建本地文件系统，指向程序所在目录  
     auto app_fs = std::make_unique<NativeFileSystem>(app_directory);  
     app_fs->Initialize();  
