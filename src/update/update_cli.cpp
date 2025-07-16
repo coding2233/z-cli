@@ -68,10 +68,10 @@ void UpdateCli::Download()
         std::string app_basepath = CliCore::GetCliCore().GetAppPath();
         std::string cmd = updater_basepath.append(updater_name).append(" ").append(app_basepath).append("/").append(file_name).append(" ").append(app_basepath);
         SPDLOG_INFO("cmd: {}",cmd);
-       std::async(std::launch::async, [&cmd]() {
-        std::system(cmd.c_str());
-    });
-
+       std::async(std::launch::async, [cmd]() {
+            std::system(cmd.c_str());
+        });
+        exit(0);
     }
 }
 
@@ -95,4 +95,6 @@ void UpdateCli::Update(std::string zip_file,std::string bin_path)
         std::string dest = "/update-app"+iter->first;
         CliCore::GetCliCore().VFSCopyFile(src, dest);
     }
+    SPDLOG_INFO("Update Success.");
+    exit(0);
 }
