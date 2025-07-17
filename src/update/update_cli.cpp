@@ -66,7 +66,7 @@ void UpdateCli::Download()
         //运行程序
         std::string updater_basepath = CliCore::GetCliCore().GetUserDirectory();
         std::string app_basepath = CliCore::GetCliCore().GetAppPath();
-        std::string updater_path = updater_basepath.append("/").append(updater_name);
+        std::string updater_path = updater_basepath;
          std::string spile_char = "/";
         #if _WIN32
         spile_char = "\\";
