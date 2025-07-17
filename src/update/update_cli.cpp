@@ -58,15 +58,20 @@ void UpdateCli::Download()
                 SPDLOG_INFO("{}",iter->first);
 
                 std::string src = "/update" + iter->first;
-                updater_name = "/z-cli-updater"+iter->first.substr(6);
-                CliCore::GetCliCore().VFSCopyFile(src, updater_name);
+                updater_name = "z-cli-updater"+iter->first.substr(6);
+                CliCore::GetCliCore().VFSCopyFile(src, "/"+updater_name);
             }
         }
 
         //运行程序
         std::string updater_basepath = CliCore::GetCliCore().GetUserDirectory();
         std::string app_basepath = CliCore::GetCliCore().GetAppPath();
-        std::string cmd = updater_basepath.append(updater_name).append(" ").append(app_basepath).append("/").append(file_name).append(" ").append(app_basepath);
+        std::string updater_path = updater_basepath.append("/").append(updater_name);
+         std::string spile_char = "/";
+        #if _WIN32
+        spile_char = "\\";
+        #endif
+        std::string cmd = updater_basepath.append(spile_char).append(updater_name).append(" ").append(app_basepath).append(spile_char).append(file_name).append(" ").append(app_basepath);
         SPDLOG_INFO("cmd: {}",cmd);
        std::async(std::launch::async, [cmd]() {
             std::system(cmd.c_str());
@@ -84,7 +89,8 @@ void UpdateCli::Update(std::string zip_file,std::string bin_path)
     CliCore::GetCliCore().GetVirtualFileSystem()->AddFileSystem("/update",std::move(update_fs));
 
     //挂在/update-app
-    CliCore::GetCliCore().AddNativeFileSystem(std::string("/update-app"),bin_path);
+    std::string update_app_name = std::string("/update-app");
+    CliCore::GetCliCore().AddNativeFileSystem(update_app_name,bin_path);
 
     //复制/update -> /app下进行更新
     for(auto iter = file_list.begin();iter!= file_list.end();iter++)
