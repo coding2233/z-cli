@@ -71,7 +71,7 @@ void UpdateCli::Download()
         #if _WIN32
         spile_char = "\\";
         #endif
-        std::string cmd = updater_basepath.append(spile_char).append(updater_name).append(" ").append(app_basepath).append(spile_char).append(file_name).append(" ").append(app_basepath);
+        std::string cmd = updater_basepath.append(spile_char).append(updater_name).append(" update ").append(app_basepath).append(spile_char).append(file_name).append(" ").append(app_basepath);
         SPDLOG_INFO("cmd: {}",cmd);
        std::async(std::launch::async, [cmd]() {
             std::system(cmd.c_str());
