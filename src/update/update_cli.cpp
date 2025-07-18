@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <future>
+#include <synchapi.h>
 
 
 bool UpdateCli::Run(std::vector<std::string> args) 
@@ -76,9 +77,10 @@ void UpdateCli::Download()
        
         std::string cmd = updater_basepath.append(spile_char).append(updater_name).append(" update ").append(download_file_path).append(" ").append(app_basepath);
         SPDLOG_INFO("cmd: {}",cmd);
-        auto cmd_result = std::async(std::launch::async, [cmd]() {
+        auto cmd_result = std::async(std::launch::async, [&cmd]() {
             std::system(cmd.c_str());
         });
+        Sleep(100);
         exit(0);
     }
 }
