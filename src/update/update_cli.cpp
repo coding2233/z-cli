@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cstdlib>
 #include <future>
-#include <synchapi.h>
 
 
 bool UpdateCli::Run(std::vector<std::string> args) 
@@ -89,6 +88,8 @@ void UpdateCli::Download()
 
 void UpdateCli::Update(std::string zip_file,std::string bin_path)
 {
+    SPDLOG_INFO("UpdateCli::Update {} {}",zip_file,bin_path);
+    Sleep(100);
     IFileSystemPtr update_fs = std::make_unique<ZipFileSystem>(zip_file);
     update_fs->Initialize();
     auto file_list = update_fs->FileList();
