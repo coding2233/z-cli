@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <iostream>
+#include <type_traits>
 
 #define FMT_UNICODE 0
 #define VFSPP_ENABLE_MULTITHREADING
@@ -32,6 +33,8 @@ public:
     static CliCore& GetCliCore();
     // Function to download a file using libcurl
     int DownloadFile(const std::string& url, const std::string& outputPath);
+
+    int Get(std::string &url,std::string &response);
 
     std::string GetUserDirectory();
     void SetAppPath(std::string path);

@@ -73,12 +73,14 @@ void UpdateCli::Download()
         #endif
         std::string cmd = updater_basepath.append(spile_char).append(updater_name).append(" update ").append(app_basepath).append(spile_char).append(file_name).append(" ").append(app_basepath);
         SPDLOG_INFO("cmd: {}",cmd);
-       std::async(std::launch::async, [cmd]() {
+        auto cmd_result = std::async(std::launch::async, [&cmd]() {
             std::system(cmd.c_str());
         });
         exit(0);
     }
 }
+
+
 
 void UpdateCli::Update(std::string zip_file,std::string bin_path)
 {
