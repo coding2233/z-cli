@@ -11,6 +11,8 @@ bool FanyiCli::Run(std::vector<std::string> args)
 {
     if (args.size() > 0) 
     {
+        std::string fanyi_url = "https://translate.appworlds.cn";
+
         std::string text;
         for (int i=0; i<args.size(); i++) {
             text.append(args[i]);
@@ -19,10 +21,17 @@ bool FanyiCli::Run(std::vector<std::string> args)
             }
         }
         std::string text_encode = curl_escape(text.c_str(), text.size());
-        std::string fanyi_url = "https://translate.appworlds.cn?from=en&to=zh-CN&text=";
-        fanyi_url.append(text_encode);
+        bool is_utf8 = CliCore::GetCliCore().VaildUTF8String(text_encode);
+        if (is_utf8) 
+        {
+            fanyi_url.append("?from=zh-CN&to=en");
+        }
+        else {
+            fanyi_url.append("?from=en&to=zh-CN");
+        }
+        fanyi_url.append("&text=").append(text_encode);
 
-         SPDLOG_INFO("{}",fanyi_url);
+        SPDLOG_INFO("{} is_utf8:{}",fanyi_url,is_utf8);
         std::string fanyi_text;
         int fanyi_code = CliCore::GetCliCore().Get(fanyi_url, fanyi_text);
         SPDLOG_INFO("[{}] {}",fanyi_code,fanyi_text);

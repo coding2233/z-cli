@@ -18,6 +18,8 @@
 #undef max  
 #endif
 
+#define UTF_CPP_CPLUSPLUS 201103L
+#include "utf8.h"
 
 #include "spdlog/spdlog.h"
 #include "vfspp/VFS.h"
@@ -45,6 +47,8 @@ public:
     bool VFSCopyFile(std::string &src,std::string dest);
 
     void AddNativeFileSystem(std::string &alias, std::string &path);
+
+    bool VaildUTF8String(std::string &tetx);
 };
 
 #endif

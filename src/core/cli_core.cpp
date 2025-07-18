@@ -4,6 +4,8 @@
 
 #include "cli_core.h"
 #include "spdlog/spdlog.h"
+#include "utf8/checked.h"
+#include "utf8/core.h"
 #include "vfspp/IFile.h"
 #include "vfspp/IFileSystem.h"
 
@@ -178,3 +180,9 @@ std::string CliCore::GetUserDirectory() {
 
 void CliCore::SetAppPath(std::string path) { app_path_ = path; }
 std::string CliCore::GetAppPath() { return app_path_; }
+
+bool CliCore::VaildUTF8String(std::string &text)
+{
+    auto result = utf8::is_valid(text);
+    return result;
+}
