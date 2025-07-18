@@ -23,6 +23,11 @@ bool UpdateCli::Run(std::vector<std::string> args)
 
 void UpdateCli::Download()
 {
+    std::string spile_char = "/";
+    #if _WIN32
+    spile_char = "\\";
+    #endif
+
     // std::string url = "http://speedtest.tele2.net/1MB.zip";
     std::string url = "https://github.com/coding2233/z-cli/releases/download/nightly/";
     std::string file_name;
@@ -34,14 +39,15 @@ void UpdateCli::Download()
     file_name = "z-cli-linux-x86_64.zip";
 #endif
     url.append(file_name);
-    SPDLOG_INFO("Download url:{}",url,file_name);
-    int ret = CliCore::GetCliCore().DownloadFile(url,file_name);
-    SPDLOG_INFO("Download result:{} file_name:{}",ret,file_name);
+    std::string download_file_path = CliCore::GetCliCore().GetUserDirectory().append(spile_char).append(file_name);
+    SPDLOG_INFO("Download url:{}",url,download_file_path);
+    int ret = CliCore::GetCliCore().DownloadFile(url,download_file_path);
+    SPDLOG_INFO("Download result:{} file_name:{}",ret,download_file_path);
     
     if (ret == 0) 
     {
         
-        IFileSystemPtr update_fs = std::make_unique<ZipFileSystem>(file_name);
+        IFileSystemPtr update_fs = std::make_unique<ZipFileSystem>(download_file_path);
         update_fs->Initialize();
         auto file_list = update_fs->FileList();
 
@@ -67,13 +73,10 @@ void UpdateCli::Download()
         std::string updater_basepath = CliCore::GetCliCore().GetUserDirectory();
         std::string app_basepath = CliCore::GetCliCore().GetAppPath();
         std::string updater_path = updater_basepath;
-         std::string spile_char = "/";
-        #if _WIN32
-        spile_char = "\\";
-        #endif
-        std::string cmd = updater_basepath.append(spile_char).append(updater_name).append(" update ").append(app_basepath).append(spile_char).append(file_name).append(" ").append(app_basepath);
+       
+        std::string cmd = updater_basepath.append(spile_char).append(updater_name).append(" update ").append(download_file_path).append(" ").append(app_basepath);
         SPDLOG_INFO("cmd: {}",cmd);
-        auto cmd_result = std::async(std::launch::async, [&cmd]() {
+        auto cmd_result = std::async(std::launch::async, [cmd]() {
             std::system(cmd.c_str());
         });
         exit(0);

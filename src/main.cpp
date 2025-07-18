@@ -2,10 +2,18 @@
 #include <string>
 #include <vector>
 
+#if _WIN32
+#include <Windows.h>
+#endif
+
 #include "cli_app.h"
 
 int main(int argc,char* args[])
 {
+#if _WIN32
+    SetConsoleCP(CP_UTF8);
+#endif
+
     CliApp cli_app(args[0]);
 
     std::string action;
