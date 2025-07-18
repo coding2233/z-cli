@@ -25,7 +25,9 @@ CliApp::CliApp(std::string app_path)
     //添加更多的执行
     AddClis();
 
+    //https://appworlds.cn/translate
     // std::string url = std::string("https://translate.appworlds.cn/?text=This%20is%20a%20test%20text&from=en&to=zh-CN");
+    // // std::string url = std::string("https://translate.appworlds.cn?text=This is a test text&from=en&to=zh-CN");
     // std::string response;
     // int ret = CliCore::GetCliCore().Get(url,response);
     // SPDLOG_INFO("url->{} {}",ret,response);
