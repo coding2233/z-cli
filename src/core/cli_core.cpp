@@ -1,5 +1,4 @@
 #include <cstdio> // For fopen, fwrite, fclose
-#include <curl/curl.h>
 #include <filesystem>
 #include <memory>
 

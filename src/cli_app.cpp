@@ -1,6 +1,7 @@
 #include "cli_app.h"
 #include "core/cli_core.h"
 #include "excel/excel_cli.h"
+#include "fanyi/fanyi_cli.h"
 #include "spdlog/spdlog.h"
 #include "update/update_cli.h"
 #include <string>
@@ -81,4 +82,5 @@ void CliApp::AddClis()
 {
     AddCli<ExcelCli>("excel");
     AddCli<UpdateCli>("update");
+    AddCli<FanyiCli>("fy");
 }

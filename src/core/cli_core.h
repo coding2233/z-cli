@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <type_traits>
+#include <curl/curl.h>
 
 #define FMT_UNICODE 0
 #define VFSPP_ENABLE_MULTITHREADING
