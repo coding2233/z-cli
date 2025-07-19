@@ -74,6 +74,11 @@ jobs:
       run: |
         xmake f -p ${{ matrix.plat }} -y -v
         xmake -v -y
+    
+    - name: Chmod
+      if: matrix.os != 'windows-latest'
+      run: |
+        chmod +x build/${{ matrix.plat }}/${{ matrix.arch }}/release/z-cli
 
     - name: Archive Release
       uses: thedoctor0/zip-release@0.7.5
