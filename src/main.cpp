@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -26,6 +27,8 @@ int main(int argc,char* args[])
         {
             std::cout<<"z-cli> ";
             read_line.clear();
+            std::cin.clear();
+            rewind(stdin);
             std::getline(std::cin,read_line);
             if("exit" == read_line)
             {
