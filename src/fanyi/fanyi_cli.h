@@ -9,6 +9,9 @@ class FanyiCli:public Cli
     public:
         bool Run(std::vector<std::string> args) override;
         std::string GetHelp() override;
+
+    private:
+        void FanyiPrint(std::string name,std::string output);
 };
 
 #endif

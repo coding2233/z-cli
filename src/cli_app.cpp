@@ -65,7 +65,7 @@ void CliApp::Run(std::string read_line)
         }
     }
     //执行
-    SPDLOG_INFO("CliApp::Run action:{}",action);
+    
     Run(action, args);
 }
 
@@ -74,7 +74,11 @@ void CliApp::Run(std::string read_line)
     auto cliIter = clis_.find(action);
     if (cliIter != clis_.end()) 
     {
+        SPDLOG_INFO("CliApp::Run action:{}",action);
         cliIter->second->Run(args);
+    }
+    else {
+        SPDLOG_WARN("CliApp::Run not found action:{}",action);
     }
  }
 

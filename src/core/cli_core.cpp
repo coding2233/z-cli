@@ -1,10 +1,8 @@
-#include <cstdio> // For fopen, fwrite, fclose
 #include <filesystem>
 #include <memory>
 
 #include "cli_core.h"
 #include "spdlog/spdlog.h"
-#include "utf8/checked.h"
 #include "utf8/core.h"
 #include "vfspp/IFile.h"
 #include "vfspp/IFileSystem.h"
@@ -186,3 +184,13 @@ bool CliCore::VaildUTF8String(std::string &text)
     auto result = utf8::is_valid(text);
     return result;
 }
+
+void CliCore::WaitSleep(int second)
+{
+    #if _WIN32
+      Sleep(second * 1000);
+    #else
+      sleep(second);
+    #endif
+}
+

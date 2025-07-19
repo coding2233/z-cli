@@ -1,5 +1,6 @@
 #include "fanyi_cli.h"
 #include "spdlog/spdlog.h"
+#include <iostream>
 
 
   std::string FanyiCli::GetHelp()
@@ -33,13 +34,24 @@ bool FanyiCli::Run(std::vector<std::string> args)
 
         SPDLOG_INFO("{} is_utf8:{}",fanyi_url,is_utf8);
         std::string fanyi_text;
+        std::string fanyi_output_text;
         int fanyi_code = CliCore::GetCliCore().Get(fanyi_url, fanyi_text);
-        SPDLOG_INFO("[{}] {}",fanyi_code,fanyi_text);
+        if (fanyi_code == 0) {
+            auto fanyi_json = nlohmann::json::parse(fanyi_text);
+            fanyi_output_text = fanyi_json["data"];
+        }
+        FanyiPrint("translate.appworlds.cn",fanyi_output_text);;
         return true;
     }
     
     SPDLOG_WARN("Translate failed.");
 
     return false;
+}
+
+void FanyiCli::FanyiPrint(std::string name,std::string output)
+{
+    std::cout<< ">> "<<name<<std::endl;
+    std::cout<<output<<std::endl;
 }
 

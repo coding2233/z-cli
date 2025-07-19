@@ -7,6 +7,12 @@
 #include <type_traits>
 #include <curl/curl.h>
 
+#if _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 #define FMT_UNICODE 0
 #define VFSPP_ENABLE_MULTITHREADING
 
@@ -23,6 +29,7 @@
 
 #include "spdlog/spdlog.h"
 #include "vfspp/VFS.h"
+#include "json.hpp"
 
 using namespace vfspp;
 using namespace spdlog;
@@ -49,6 +56,8 @@ public:
     void AddNativeFileSystem(std::string &alias, std::string &path);
 
     bool VaildUTF8String(std::string &tetx);
+
+    void WaitSleep(int second);
 };
 
 #endif
