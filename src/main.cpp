@@ -11,7 +11,7 @@
 int main(int argc,char* args[])
 {
 #if _WIN32
-    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
 #endif
 
     CliApp cli_app(args[0]);

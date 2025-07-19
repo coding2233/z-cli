@@ -1,8 +1,8 @@
 #include "update_cli.h"
 #include "spdlog/spdlog.h"
-#include <algorithm>
 #include <cstdlib>
 #include <future>
+#include <thread>
 
 
 bool UpdateCli::Run(std::vector<std::string> args) 
@@ -79,7 +79,8 @@ void UpdateCli::Download()
         auto cmd_result = std::async(std::launch::async, [&cmd]() {
             std::system(cmd.c_str());
         });
-        Sleep(100);
+
+        _sleep(200);//延时5秒 
         exit(0);
     }
 }
@@ -89,7 +90,7 @@ void UpdateCli::Download()
 void UpdateCli::Update(std::string zip_file,std::string bin_path)
 {
     SPDLOG_INFO("UpdateCli::Update {} {}",zip_file,bin_path);
-    Sleep(100);
+    _sleep(200);
     IFileSystemPtr update_fs = std::make_unique<ZipFileSystem>(zip_file);
     update_fs->Initialize();
     auto file_list = update_fs->FileList();
