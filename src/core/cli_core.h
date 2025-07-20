@@ -25,7 +25,6 @@
 #endif
 
 #define UTF_CPP_CPLUSPLUS 201103L
-#include "utf8.h"
 
 #include "spdlog/spdlog.h"
 #include "vfspp/VFS.h"

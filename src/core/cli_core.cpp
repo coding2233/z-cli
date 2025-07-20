@@ -181,8 +181,9 @@ std::string CliCore::GetAppPath() { return app_path_; }
 
 bool CliCore::VaildUTF8String(std::string &text)
 {
-    auto result = utf8::is_valid(text);
-    return result;
+    // auto result = utf8::is_valid(text);
+    // return result;
+    return true;
 }
 
 void CliCore::WaitSleep(int second)

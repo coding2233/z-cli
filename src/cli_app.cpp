@@ -1,15 +1,70 @@
+#include <string>
+#include <vector>
+
 #include "cli_app.h"
 #include "core/cli_core.h"
 #include "excel/excel_cli.h"
 #include "fanyi/fanyi_cli.h"
 #include "spdlog/spdlog.h"
 #include "update/update_cli.h"
-#include <string>
-#include <vector>
 
-CliApp::CliApp(std::string app_path)
+
+#include "utf8_console.h"
+
+CliApp::CliApp()
 {
-    // 获取当前程序的完整路径  
+   
+}
+
+CliApp::~CliApp(){}
+
+
+int CliApp::Run(int argc,char* args[])
+{
+    std::locale::global(std::locale("zh_CN.UTF-8"));
+    //控制台支持utf-8
+    initialize_utf8_console();
+    //初始化
+    Init(args[0]);
+    //参数
+    std::string action;
+    std::vector<std::string> action_args;
+    if(argc < 2)
+    {
+        std::string read_line;
+        while(true)
+        {
+            std::cout<<"z-cli> ";
+            read_line.clear();
+            // std::cin.clear();
+            // rewind(stdin);
+            std::string sss;
+            std::getline(std::cin,sss);
+            std::cout << "--------------sss:" << sss << std::endl;
+            if("exit" == read_line)
+            {
+                break;
+            }
+            Run(read_line);
+        }
+    }
+    else 
+    {
+        action = args[1];
+        for(int i = 2;i < argc;i++)
+        {
+            action_args.push_back(args[i]);
+        }
+        Run(action,action_args);
+    }
+  
+    return 0;
+}
+
+
+void CliApp::Init(std::string app_path)
+{
+     // 获取当前程序的完整路径  
     std::filesystem::path executable_path = std::filesystem::canonical(app_path);  
     // 获取程序所在的目录  
     std::string app_directory = executable_path.parent_path().string();  
@@ -33,8 +88,6 @@ CliApp::CliApp(std::string app_path)
     // int ret = CliCore::GetCliCore().Get(url,response);
     // SPDLOG_INFO("url->{} {}",ret,response);
 }
-
-CliApp::~CliApp(){}
 
 
 void CliApp::Run(std::string read_line)
