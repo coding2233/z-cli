@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <string>
 #include <vector>
 
@@ -21,7 +22,6 @@ CliApp::~CliApp(){}
 
 int CliApp::Run(int argc,char* args[])
 {
-    std::locale::global(std::locale("zh_CN.UTF-8"));
     //控制台支持utf-8
     initialize_utf8_console();
     //初始化
@@ -38,13 +38,7 @@ int CliApp::Run(int argc,char* args[])
             read_line.clear();
             // std::cin.clear();
             // rewind(stdin);
-            std::string sss;
-            std::getline(std::cin,sss);
-            std::cout << "--------------sss:" << sss << std::endl;
-            if("exit" == read_line)
-            {
-                break;
-            }
+            std::getline(std::cin,read_line);
             Run(read_line);
         }
     }
@@ -124,6 +118,10 @@ void CliApp::Run(std::string read_line)
 
  void CliApp::Run(std::string action,std::vector<std::string> args)
  {
+    if ("exit" == action) {
+        exit(0);
+    }
+
     auto cliIter = clis_.find(action);
     if (cliIter != clis_.end()) 
     {

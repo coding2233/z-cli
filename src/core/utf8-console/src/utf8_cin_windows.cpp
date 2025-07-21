@@ -1,5 +1,5 @@
 #include <iostream>
-#ifdef WIN32
+#ifdef _WIN32
 #include <streambuf>
 #include <Windows.h>
 

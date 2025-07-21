@@ -22,7 +22,6 @@ bool FanyiCli::Run(std::vector<std::string> args)
             }
         }
         std::string text_encode = curl_escape(text.c_str(), text.size());
-        SPDLOG_INFO("text {} {}",text,text_encode);
         // bool is_utf8 = CliCore::GetCliCore().VaildUTF8String(text_encode);
         bool is_utf8 = false;
         if (is_utf8) 
