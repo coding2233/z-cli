@@ -144,7 +144,34 @@ void CliApp::AddClis()
 
 std::string CliApp::GetAppPath(std::string app_path)
 {
-    #ifndef _WIN32
+    #ifdef _WIN32
+    if (app_path.find("\\")==std::string::npos)
+    {
+        std::string env_path = std::string(getenv("PATH"));
+        // SPDLOG_INFO("env_path: {}",env_path);
+        int start_index= 0 ;
+        int find_index = 0;
+        for (size_t i = 0; i < env_path.size(); i++)
+        {
+            if (';'== env_path[i])
+            {
+                find_index = i;
+                SPDLOG_INFO("start_index:{} find_index:{} length:{} env_size:{}",start_index,find_index,find_index-start_index,env_path.size());
+                std::string find_app_path = env_path.substr(start_index,find_index-start_index)+"\\"+app_path+".exe";
+                SPDLOG_INFO("find_app_path: {}",find_app_path);
+                if (std::filesystem::exists(find_app_path))
+                {
+                    app_path = find_app_path;
+                    break;
+                }
+                else
+                {
+                    start_index = find_index+1;
+                }
+            }
+        }
+    }
+    #else
     if (app_path.find("/")==std::string::npos)
     {
         std::string env_path = std::string(getenv("PATH"));
