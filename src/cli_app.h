@@ -27,6 +27,8 @@ class CliApp
 
         void Init(std::string app_path);
 
+        std::string GetAppPath(std::string app_path);
+
         template<class T>
         void AddCli(std::string name)
         {

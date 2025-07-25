@@ -58,11 +58,13 @@ int CliApp::Run(int argc,char* args[])
 
 void CliApp::Init(std::string app_path)
 {
+    SPDLOG_INFO("Init app_path: {}",app_path);
+    app_path = GetAppPath(app_path);
+    SPDLOG_INFO("app_path: {}",app_path);
      // 获取当前程序的完整路径  
     std::filesystem::path executable_path = std::filesystem::canonical(app_path);  
     // 获取程序所在的目录  
     std::string app_directory = executable_path.parent_path().string();  
-    SPDLOG_INFO("app_path: {}",app_path);
     SPDLOG_INFO("app_directory: {}",app_directory);
     CliCore::GetCliCore().SetAppPath(app_directory);
     // 创建本地文件系统，指向程序所在目录  
@@ -138,4 +140,37 @@ void CliApp::AddClis()
     AddCli<ExcelCli>("excel");
     AddCli<UpdateCli>("update");
     AddCli<FanyiCli>("fy");
+}
+
+std::string CliApp::GetAppPath(std::string app_path)
+{
+    #ifndef _WIN32
+    if (app_path.find("/")==std::string::npos)
+    {
+        std::string env_path = std::string(getenv("PATH"));
+        // SPDLOG_INFO("env_path: {}",env_path);
+        int start_index= 0 ;
+        int find_index = 0;
+        for (size_t i = 0; i < env_path.size(); i++)
+        {
+            if (':'== env_path[i])
+            {
+                find_index = i;
+                SPDLOG_INFO("start_index:{} find_index:{} length:{} env_size:{}",start_index,find_index,find_index-start_index,env_path.size());
+                std::string find_app_path = env_path.substr(start_index,find_index-start_index)+"/"+app_path;
+                SPDLOG_INFO("find_app_path: {}",find_app_path);
+                if (std::filesystem::exists(find_app_path))
+                {
+                    app_path = find_app_path;
+                    break;
+                }
+                else
+                {
+                    start_index = find_index+1;
+                }
+            }
+        }
+    }
+    #endif
+    return app_path;
 }

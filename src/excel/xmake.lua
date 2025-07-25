@@ -1,5 +1,3 @@
-add_requires("xlnt")
-
 includes("../core")
 
 target("excel-cli")
