@@ -63,7 +63,7 @@ package("llama.cpp")
         end
         if package:config("vulkan") then
             -- requires vulkan-1 and glslc
-            package:add("deps", "vulkan")
+            package:add("deps", "vulkansdk")
             package:add("deps", "shaderc", {configs = {binaryonly = true}})
         end
         if package:config("blas") then

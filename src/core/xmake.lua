@@ -3,6 +3,7 @@ add_requires("libcurl")
 
 target("z-core")
     set_kind("static")
+    set_languages("cxx17")
     if is_plat("windows") then 
         add_cflags("/utf-8")
         add_cxflags("/utf-8")
@@ -18,3 +19,5 @@ target("z-core")
     add_files("utf8-console/src/*.cpp","utf8-console/src/*.c")
     add_files("*.cpp")
     add_packages("libcurl",{public = true })
+    add_packages("llama.cpp",{public = true})
+    -- add_packages("llama.cpp", {configs = {vulkan = false}})

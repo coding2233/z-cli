@@ -8,7 +8,6 @@
 #include "fanyi/fanyi_cli.h"
 #include "spdlog/spdlog.h"
 #include "update/update_cli.h"
-#include "llama/llama_cli.h"
 
 
 #include "utf8_console.h"
@@ -141,7 +140,6 @@ void CliApp::AddClis()
     AddCli<ExcelCli>("excel");
     AddCli<UpdateCli>("update");
     AddCli<FanyiCli>("fy");
-    AddCli<LlamaCli>("llama");
 }
 
 std::string CliApp::GetAppPath(std::string app_path)

@@ -6,6 +6,9 @@
 #include <iostream>
 #include <type_traits>
 #include <curl/curl.h>
+#include <cstdio>
+#include <cstring>
+#include <vector>
 
 #if _WIN32
 #include <Windows.h>
@@ -57,6 +60,8 @@ public:
     bool VaildUTF8String(std::string &tetx);
 
     void WaitSleep(int second);
+
+    int RunLlama(std::string model_path,std::string prompt);
 };
 
 #endif
