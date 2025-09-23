@@ -34,7 +34,7 @@ bool JsonCli::Run(std::vector<std::string> args)
             }
             catch(const std::exception& e)
             {
-                std::cerr << e.what() << '\n';
+                SPDLOG_ERROR( e.what());
             }
         }
         else

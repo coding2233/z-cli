@@ -158,9 +158,9 @@ std::string CliApp::GetAppPath(std::string app_path)
             if (';'== env_path[i])
             {
                 find_index = i;
-                SPDLOG_INFO("start_index:{} find_index:{} length:{} env_size:{}",start_index,find_index,find_index-start_index,env_path.size());
+                // SPDLOG_INFO("start_index:{} find_index:{} length:{} env_size:{}",start_index,find_index,find_index-start_index,env_path.size());
                 std::string find_app_path = env_path.substr(start_index,find_index-start_index)+"\\"+app_path+".exe";
-                SPDLOG_INFO("find_app_path: {}",find_app_path);
+                // SPDLOG_INFO("find_app_path: {}",find_app_path);
                 if (std::filesystem::exists(find_app_path))
                 {
                     app_path = find_app_path;
@@ -185,9 +185,9 @@ std::string CliApp::GetAppPath(std::string app_path)
             if (':'== env_path[i])
             {
                 find_index = i;
-                SPDLOG_INFO("start_index:{} find_index:{} length:{} env_size:{}",start_index,find_index,find_index-start_index,env_path.size());
+                // SPDLOG_INFO("start_index:{} find_index:{} length:{} env_size:{}",start_index,find_index,find_index-start_index,env_path.size());
                 std::string find_app_path = env_path.substr(start_index,find_index-start_index)+"/"+app_path;
-                SPDLOG_INFO("find_app_path: {}",find_app_path);
+                // SPDLOG_INFO("find_app_path: {}",find_app_path);
                 if (std::filesystem::exists(find_app_path))
                 {
                     app_path = find_app_path;
