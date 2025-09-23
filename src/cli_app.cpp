@@ -8,6 +8,7 @@
 #include "fanyi/fanyi_cli.h"
 #include "spdlog/spdlog.h"
 #include "update/update_cli.h"
+#include "json/json_cli.h"
 
 
 #include "utf8_console.h"
@@ -61,7 +62,7 @@ void CliApp::Init(std::string app_path)
     SPDLOG_INFO("Init app_path: {}",app_path);
     app_path = GetAppPath(app_path);
     SPDLOG_INFO("app_path: {}",app_path);
-     // 获取当前程序的完整路径  
+    // 获取当前程序的完整路径  
     std::filesystem::path executable_path = std::filesystem::canonical(app_path);  
     // 获取程序所在的目录  
     std::string app_directory = executable_path.parent_path().string();  
@@ -140,6 +141,7 @@ void CliApp::AddClis()
     AddCli<ExcelCli>("excel");
     AddCli<UpdateCli>("update");
     AddCli<FanyiCli>("fy");
+
 }
 
 std::string CliApp::GetAppPath(std::string app_path)
