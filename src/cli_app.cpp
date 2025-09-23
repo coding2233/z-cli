@@ -141,7 +141,7 @@ void CliApp::AddClis()
     AddCli<ExcelCli>("excel");
     AddCli<UpdateCli>("update");
     AddCli<FanyiCli>("fy");
-
+    AddCli<JsonCli>("json");
 }
 
 std::string CliApp::GetAppPath(std::string app_path)
