@@ -14,6 +14,8 @@ add_requires("llama.cpp")
 
 set_languages("cxx17","c17")
 
+add_requires("cxxopts")
+
 includes("src/core", "src/excel", "src/fanyi", "src/json", "src/update")
 
 add_plugindirs("xmake/plugins")
@@ -31,3 +33,4 @@ target("z-cli")
     add_files("src/generated/add_clis.cpp")
     add_includedirs("src")
     add_deps("z-core", "excel-cli", "fanyi-cli", "json-cli", "update-cli")
+    add_packages("cxxopts")

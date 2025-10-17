@@ -23,9 +23,6 @@ task("gen_add_clis")
             local cli_name = module_name:gsub("-%", "_"):gsub(" ", "_")
             local cli_class_name = cli_name:sub(1,1):upper() .. cli_name:sub(2) .. "Cli"
             local command_name = module_name
-            if module_name == "fanyi" then
-                command_name = "fy"
-            end
             content = content .. string.format("    AddCli<%s>(\"%s\");\n", cli_class_name, command_name)
         end
 

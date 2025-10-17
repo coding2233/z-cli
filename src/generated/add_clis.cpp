@@ -10,6 +10,6 @@ void CliApp::AddClis()
 {
     AddCli<UpdateCli>("update");
     AddCli<JsonCli>("json");
-    AddCli<FanyiCli>("fy");
+    AddCli<FanyiCli>("fanyi");
     AddCli<ExcelCli>("excel");
 }

@@ -1,13 +1,14 @@
 #ifndef __EXCEL_CLI_H__
 #define __EXCEL_CLI_H__
 
-#include "../cli.h"
+#include "cli.h"
 
-class ExcelCli:public Cli
+class ExcelCli : public Cli
 {
     public:
-        bool Run(std::vector<std::string> args) override;
-        std::string GetHelp() override;
+        ExcelCli(std::string name) : Cli(name, "Excel file operations") {}
+        void SetupOptions() override;
+        bool Run(cxxopts::ParseResult result) override;
 };
 
 #endif

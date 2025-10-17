@@ -1,5 +1,6 @@
 
 add_requires("libcurl")
+add_requires("cxxopts")
 
 target("z-core")
     set_kind("static")
@@ -20,4 +21,5 @@ target("z-core")
     add_files("*.cpp")
     add_packages("libcurl",{public = true })
     add_packages("llama.cpp",{public = true})
+    add_packages("cxxopts",{public = true})
     -- add_packages("llama.cpp", {configs = {vulkan = false}})

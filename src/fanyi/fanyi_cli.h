@@ -2,14 +2,14 @@
 #ifndef __FANYI_CLI_H__
 #define __FANYI_CLI_H__
 
-#include "../cli.h"
+#include "cli.h"
 
-class FanyiCli:public Cli
+class FanyiCli : public Cli
 {
     public:
-        bool Run(std::vector<std::string> args) override;
-        std::string GetHelp() override;
-
+        FanyiCli(std::string name) : Cli(name, "Translate text") {}
+        void SetupOptions() override;
+        bool Run(cxxopts::ParseResult result) override;
     private:
         void FanyiPrint(std::string name,std::string output);
 };

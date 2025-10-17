@@ -1,40 +1,48 @@
 #include <iostream>
 #include <filesystem>
+#include <fstream>
 
 #include "json_cli.h"
 #include "spdlog/spdlog.h"
+#include "core/json/json.hpp"
 
-
-
-  std::string JsonCli::GetHelp()
-  {
-    return "JsonCli";
-  }
-
-bool JsonCli::Run(std::vector<std::string> args)
+void JsonCli::SetupOptions()
 {
-    if (args.size() > 0) 
+    options_.add_options()
+        ("h,help", "Print help")
+        ("f,file", "Json file path", cxxopts::value<std::string>());
+
+    options_.parse_positional({"file"});
+}
+
+bool JsonCli::Run(cxxopts::ParseResult result)
+{
+    if (result.count("help"))
     {
-        auto json_file = args[0];
-         // 获取当前程序的完整路径  
-        std::filesystem::path json_file_path = std::filesystem::canonical(json_file);  
+        std::cout << options_.help() << std::endl;
+        return true;
+    }
+
+    if (result.count("file"))
+    {
+        auto json_file = result["file"].as<std::string>();
+        std::filesystem::path json_file_path = std::filesystem::canonical(json_file);
         auto is_exists = std::filesystem::exists(json_file_path);
         if (is_exists)
         {
-            //获取文件内容，解析json, 如果解析失败，打印错误信息
             try
             {
                 std::string json_content;
-                std::ifstream json_file(json_file_path);
+                std::ifstream json_file_stream(json_file_path);
                 std::stringstream json_stream;
-                json_stream << json_file.rdbuf();
+                json_stream << json_file_stream.rdbuf();
                 json_content = json_stream.str();
                 nlohmann::json json = nlohmann::json::parse(json_content);
-                SPDLOG_INFO("Json: \n{}",json.dump(4));
+                SPDLOG_INFO("Json: \n{}", json.dump(4));
             }
             catch(const std::exception& e)
             {
-                SPDLOG_ERROR( e.what());
+                SPDLOG_ERROR(e.what());
             }
         }
         else

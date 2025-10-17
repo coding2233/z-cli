@@ -5,13 +5,14 @@
 #include "../core/cli_core.h"
 
 class UpdateCli:public Cli
-{ 
-    public: 
-        std::string GetHelp() override
+{
+    public:
+        UpdateCli(std::string name) : Cli(name, "Update the z-cli application") {}
+        std::string GetHelp()
         {
             return "update";
-        }
-        bool Run(std::vector<std::string> args) override;
+        }        void SetupOptions() override;
+        bool Run(cxxopts::ParseResult result) override;
     private:
         void Download();
         void Update(std::string zip_file,std::string bin_path);

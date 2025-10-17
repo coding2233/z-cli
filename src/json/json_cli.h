@@ -2,15 +2,14 @@
 #ifndef __JSON_CLI_H__
 #define __JSON_CLI_H__
 
-#include "../cli.h"
+#include "cli.h"
 
-class JsonCli:public Cli
+class JsonCli : public Cli
 {
     public:
-        bool Run(std::vector<std::string> args) override;
-        std::string GetHelp() override;
-
-    private:
+        JsonCli(std::string name) : Cli(name, "JSON operations") {}
+        void SetupOptions() override;
+        bool Run(cxxopts::ParseResult result) override;
 };
 
 #endif

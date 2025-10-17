@@ -4,11 +4,17 @@
 #include <cstdlib>
 #include <future>
 
-bool UpdateCli::Run(std::vector<std::string> args) {
+void UpdateCli::SetupOptions() {
+    options_.add_options()
+        ("z,zip_file", "Zip file for update", cxxopts::value<std::string>())
+        ("b,bin_path", "Binary path for update", cxxopts::value<std::string>());
+}
+
+bool UpdateCli::Run(cxxopts::ParseResult result) {
   SPDLOG_INFO("UpdateCli::Run");
 
-  if (args.size() == 2) {
-    Update(args[0], args[1]);
+  if (result.count("zip_file") && result.count("bin_path")) {
+    Update(result["zip_file"].as<std::string>(), result["bin_path"].as<std::string>());
   } else {
     Download();
   }
