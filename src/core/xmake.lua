@@ -9,7 +9,7 @@ target("z-core")
         add_cxflags("/utf-8")
         add_cxxflags("/utf-8")
     end 
-    add_includedirs("spdlog-1.15.3/include",{public=true})
+    add_includedirs("spdlog-1.15.3/include", {public = true})
     add_includedirs("vfspp/include",{public=true})
     add_includedirs("vfspp/include/vfspp",{public=true})
     add_includedirs("vfspp/vendor/miniz-cpp",{public=true})
