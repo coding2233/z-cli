@@ -14,9 +14,17 @@ add_requires("llama.cpp")
 
 set_languages("cxx17","c17")
 
-includes("src/*")
+-- auto includes src modules
+for _, dir in ipairs(os.dirs("src/*")) do
+    includes(path.join("src", path.basename(dir)))
+end
 
 target("z-cli")
-    add_files("src/*.cpp","src/update/*.cpp")
+    add_files("src/*.cpp")
     add_deps("z-core")
-    add_deps("excel-cli","fanyi-cli","json-cli")
+    for _, dir in ipairs(os.dirs("src/*")) do
+        local module_name = path.basename(dir)
+        if module_name ~= "core" then
+            add_deps(module_name .. "-cli")
+        end
+    end
