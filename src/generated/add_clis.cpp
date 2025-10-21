@@ -1,15 +1,15 @@
 // This file is generated automatically by xmake. Do not edit.
 
 #include "cli_app.h"
-#include "update/update_cli.h"
-#include "json/json_cli.h"
-#include "fanyi/fanyi_cli.h"
 #include "excel/excel_cli.h"
+#include "fanyi/fanyi_cli.h"
+#include "json/json_cli.h"
+#include "update/update_cli.h"
 
 void CliApp::AddClis()
 {
-    AddCli<UpdateCli>("update");
-    AddCli<JsonCli>("json");
-    AddCli<FanyiCli>("fanyi");
     AddCli<ExcelCli>("excel");
+    AddCli<FanyiCli>("fanyi");
+    AddCli<JsonCli>("json");
+    AddCli<UpdateCli>("update");
 }

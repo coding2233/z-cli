@@ -1,52 +1,28 @@
 # GEMINI.md
 
-## Project Overview
+## Gemini CLI Development Guidelines for `z-cli`:
 
-This project, `z-cli`, is a C++ command-line interface (CLI) application. It provides a shell-like interface for various sub-commands and can also be used to execute single commands directly. The project is built using the `xmake` build system.
+1.  **Project Context:**
+    *   Always refer to `GEMINI.md` for the project overview, build process, and general development conventions.
+    *   Prioritize `xmake.lua` files to understand project structure, dependencies, and build configurations.
+    *   Analyze existing C++ source files (`.cpp`, `.h`) to infer coding style, architectural patterns, and common utility usage.
 
-The application is designed to be extensible, with a clear pattern for adding new commands. Currently, it includes commands for interacting with Excel files (`excel`), updating the application (`update`), translation (`fy`), and handling JSON (`json`).
+2.  **Code Modification:**
+    *   **Style Adherence:** Strictly follow the established C++ coding style (indentation, brace style, naming) observed in the `z-cli` codebase.
+    *   **Dependency Management:** Utilize only libraries already integrated via `xmake.lua` or explicitly documented in `GEMINI.md` (e.g., `spdlog`, `vfspp`, `xlnt`, `llama.cpp`). Avoid introducing new external dependencies without explicit user approval.
+    *   **New Command Implementation:** When adding new commands, adhere to the `Cli` class inheritance pattern, implement the `Run` method, and ensure registration in `CliApp::AddClis()` as outlined in `GEMINI.md`.
+    *   **Testing & Verification:** For new features or bug fixes, prioritize functional verification by running `xmake` and then executing relevant `z-cli` commands (e.g., `xmake run z-cli [command] --help`). If a testing framework is identified, I will propose or implement unit tests.
+    *   **File System Interaction:** Within application logic, use `CliCore::GetCliCore().GetVirtualFileSystem()` for all file operations.
 
-Key technologies and libraries used:
-*   **C++17**
-*   **xmake** for building
-*   **spdlog** for logging
-*   A custom virtual file system (`vfspp`) for file operations.
-*   Dependencies such as `xlnt` and `llama.cpp` are managed through `xmake`.
+3.  **Build and Quality Assurance:**
+    *   **Post-Modification Build:** After any code change, always attempt a full project build using `xmake`.
+    *   **Functional Check:** Upon successful build, verify the changes by running the affected `z-cli` commands.
+    *   **Error Resolution:** Upon build failures, I will analyze compiler output and correct the code accordingly.
 
-## Building and Running
+4.  **Commit Practices:**
+    *   When requested to commit, I will craft clear, concise, and informative commit messages that explain the *rationale* behind the changes, not just the superficial modifications.
 
-The project is built and run using `xmake`.
-
-*   **Build the project:**
-    ```bash
-    xmake
-    ```
-
-*   **Run the application in interactive mode:**
-    ```bash
-    xmake run z-cli
-    ```
-    This will start the `z-cli>` shell.
-
-*   **Run a specific command:**
-    ```bash
-    xmake run z-cli [command] [args...]
-    ```
-    For example:
-    ```bash
-    xmake run z-cli excel --help
-    ```
-
-*   **Clean the build:**
-    ```bash
-    xmake clean
-    ```
-
-## Development Conventions
-
-*   **Adding New Commands:** To add a new command, you need to:
-    1.  Create a new class that inherits from the `Cli` class.
-    2.  Implement the `Run` method for your new command.
-    3.  Register the new command in `CliApp::AddClis()` in `src/cli_app.cpp`.
-*   **File System:** The application uses a virtual file system. Use the `CliCore::GetCliCore().GetVirtualFileSystem()` to interact with files.
-*   **Logging:** Use the `spdlog` library for logging.
+5.  **User Interaction:**
+    *   I will clearly articulate my plan before initiating significant code modifications.
+    *   I will report the outcomes of all build and verification steps.
+    *   I will seek explicit user confirmation for any potentially destructive or large-scale changes.

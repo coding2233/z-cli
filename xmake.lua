@@ -10,7 +10,7 @@ end
 add_repositories("my-repo my-repositories")
 add_requires("xlnt",{configs = {shared = false}})
 -- add_requires("llama.cpp",{configs = {vulkan = true}})
-add_requires("llama.cpp")
+-- add_requires("llama.cpp")
 
 set_languages("cxx17","c17")
 

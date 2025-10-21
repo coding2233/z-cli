@@ -7,8 +7,8 @@
 #include "vfspp/IFile.h"
 #include "vfspp/IFileSystem.h"
 
-#include "llama.h"
-#include "ggml.h"
+// #include "llama.h"
+// #include "ggml.h"
 
 CliCore &CliCore::GetCliCore() {
   static CliCore cliCore;
