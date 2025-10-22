@@ -34,7 +34,16 @@ bool FanyiCli::Run(cxxopts::ParseResult result)
 
         std::string fanyi_url = "https://translate.appworlds.cn";
         std::string text_encode = curl_escape(text_to_translate.c_str(), text_to_translate.size());
+        
+        // Simple UTF-8 detection - check if text contains non-ASCII characters
         bool is_utf8 = false;
+        for (char c : text_to_translate) {
+            if (static_cast<unsigned char>(c) > 127) {
+                is_utf8 = true;
+                break;
+            }
+        }
+        
         if (is_utf8)
         {
             fanyi_url.append("?from=zh-CN&to=en");

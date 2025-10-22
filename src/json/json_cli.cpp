@@ -7,6 +7,14 @@
 #include "spdlog/spdlog.h"
 #include "core/json/json.hpp"
 
+// 跨平台路径处理辅助函数
+namespace {
+    std::string normalizePath(const std::string& path) {
+        std::filesystem::path fs_path(path);
+        return fs_path.string();
+    }
+}
+
 void JsonCli::SetupOptions()
 {
     options_.add_options()
@@ -26,7 +34,7 @@ bool JsonCli::Run(cxxopts::ParseResult result)
 
     if (result.count("file"))
     {
-        auto json_file = result["file"].as<std::string>();
+        auto json_file = normalizePath(result["file"].as<std::string>());
         
         try
         {

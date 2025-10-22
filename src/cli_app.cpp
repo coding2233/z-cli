@@ -29,6 +29,8 @@ int CliApp::Run(int argc,char* args[])
 {
     //控制台支持utf-8
     initialize_utf8_console();
+    
+    
     //初始化
     Init(args[0]);
 
@@ -119,6 +121,11 @@ int CliApp::Run(int argc,char* args[])
         {
             std::cout << "z-cli> ";
             std::getline(std::cin, read_line);
+            
+            // Handle Windows CRLF line endings
+            if (!read_line.empty() && read_line.back() == '\r') {
+                read_line.pop_back();
+            }
             
             // Trim whitespace
             read_line.erase(0, read_line.find_first_not_of(" \t\n\r"));
@@ -238,9 +245,12 @@ void CliApp::Init(std::string app_path)
 std::string CliApp::GetAppPath(std::string app_path)
 {
     #ifdef _WIN32
-    if (app_path.find("\\")==std::string::npos)
+    if (app_path.find(R"(\)")==std::string::npos)
     {
-        std::string env_path = std::string(getenv("PATH"));
+        const char* env_var = std::getenv("PATH");
+        if (!env_var) env_var = std::getenv("Path");  // Windows might use "Path"
+        if (!env_var) return app_path;  // No PATH environment variable found
+        std::string env_path = std::string(env_var);
         // SPDLOG_INFO("env_path: {}",env_path);
         int start_index= 0 ;
         int find_index = 0;
@@ -267,7 +277,9 @@ std::string CliApp::GetAppPath(std::string app_path)
     #else
     if (app_path.find("/")==std::string::npos)
     {
-        std::string env_path = std::string(getenv("PATH"));
+        const char* env_var = std::getenv("PATH");
+        if (!env_var) return app_path;  // No PATH environment variable found
+        std::string env_path = std::string(env_var);
         // SPDLOG_INFO("env_path: {}",env_path);
         int start_index= 0 ;
         int find_index = 0;
