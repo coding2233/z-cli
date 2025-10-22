@@ -6,36 +6,34 @@
 #include <string>
 #include <vector>
 
-
 #include "cli.h"
 
 #define CLI_APP_VERSION "1.0.0"
 
 class CliApp
 {
-    public:
-        CliApp();
-        ~CliApp();
+public:
+    CliApp();
+    ~CliApp();
 
-        int Run(int argc,char* args[]);
+    int Run(int argc, char* args[]);
 
-        
+private:
+    std::map<std::string, std::shared_ptr<Cli>> clis_;
 
-    private:
-        std::map<std::string,std::shared_ptr<Cli>> clis_;  
+    void Initialize(std::string app_path);
+    std::string GetAppPath(std::string app_path);
+    void SetupVirtualFileSystem(const std::string& app_directory);
+    void LoadConfiguration();
+    void InitializeLogging();
 
-        void Init(std::string app_path);
+    template<class T>
+    void AddCli(std::string name)
+    {
+        clis_.insert(std::make_pair(name, std::make_shared<T>(name)));
+    }
 
-        std::string GetAppPath(std::string app_path);
-
-        template<class T>
-        void AddCli(std::string name)
-        {
-            clis_.insert(std::make_pair(name,std::make_shared<T>(name)));
-        }
-
-        void AddClis();
-
+    void AddClis();
 };
 
-#endif
+#endif // __CLI_APP_H__

@@ -1,4 +1,3 @@
-
 add_requires("libcurl")
 add_requires("cxxopts")
 

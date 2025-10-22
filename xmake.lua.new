@@ -34,3 +34,6 @@ target("z-cli")
     add_includedirs("src")
     add_deps("z-core", "excel-cli", "fanyi-cli", "json-cli", "update-cli")
     add_packages("cxxopts")
+
+-- 包含测试
+includes("tests")

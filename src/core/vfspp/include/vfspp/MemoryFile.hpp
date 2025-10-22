@@ -2,6 +2,10 @@
 #define MEMORYFILE_HPP
 
 #include "IFile.h"
+#include <cstdint>
+#include <vector>
+#include <string>
+#include <cstring>
 
 namespace vfspp
 {
