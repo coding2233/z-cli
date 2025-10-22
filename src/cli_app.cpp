@@ -1,6 +1,8 @@
 #include <cstdlib>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <algorithm>
 
 #include "cli_app.h"
 #include "core/cli_core.h"
@@ -111,17 +113,86 @@ int CliApp::Run(int argc,char* args[])
     else
     {
         // Interactive mode
+        std::cout << "z-cli interactive mode. Type 'help' for commands or 'exit' to quit." << std::endl;
         std::string read_line;
         while (true)
         {
             std::cout << "z-cli> ";
             std::getline(std::cin, read_line);
-            if (read_line == "exit")
+            
+            // Trim whitespace
+            read_line.erase(0, read_line.find_first_not_of(" \t\n\r"));
+            read_line.erase(read_line.find_last_not_of(" \t\n\r") + 1);
+            
+            if (read_line.empty() || read_line == "exit" || read_line == "quit")
             {
                 break;
             }
-            // This part needs to be refactored to handle interactive commands
-            // For now, it's disabled.
+            
+            if (read_line == "help")
+            {
+                std::cout << "Available commands:\n";
+                for (const auto& pair : clis_)
+                {
+                    std::cout << "  " << pair.first << " - " << pair.second->GetHelpText() << "\n";
+                }
+                std::cout << "  help - Show this help message\n";
+                std::cout << "  exit/quit - Exit interactive mode\n";
+                continue;
+            }
+            
+            // Parse interactive command
+            std::istringstream iss(read_line);
+            std::string command;
+            iss >> command;
+            
+            auto it = clis_.find(command);
+            if (it != clis_.end())
+            {
+                auto& cli = it->second;
+                cli->SetupOptions();
+                auto& cli_options = cli->GetOptions();
+                
+                // Collect remaining arguments
+                std::vector<std::string> args;
+                std::string arg;
+                while (iss >> arg) {
+                    args.push_back(arg);
+                }
+                
+                // Build argv for cxxopts
+                std::vector<char*> argv;
+                argv.push_back(const_cast<char*>("z-cli")); // program name
+                
+                // Check for help flag
+                bool has_help = false;
+                for (const auto& a : args) {
+                    if (a == "--help" || a == "-h") {
+                        has_help = true;
+                        break;
+                    }
+                    argv.push_back(const_cast<char*>(a.c_str()));
+                }
+                
+                if (has_help) {
+                    std::cout << cli_options.help() << std::endl;
+                } else if (args.empty()) {
+                    std::cout << cli_options.help() << std::endl;
+                } else {
+                    try {
+                        auto result = cli_options.parse(argv.size(), argv.data());
+                        cli->Run(result);
+                    } catch (const std::exception& e) {
+                        std::cerr << "Error: " << e.what() << std::endl;
+                        std::cout << cli_options.help() << std::endl;
+                    }
+                }
+            }
+            else
+            {
+                std::cout << "Unknown command: " << command << std::endl;
+                std::cout << "Type 'help' for available commands." << std::endl;
+            }
         }
     }
 
