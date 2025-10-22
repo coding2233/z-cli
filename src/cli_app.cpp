@@ -37,10 +37,15 @@ int CliApp::Run(int argc,char* args[])
         ("args", "Arguments for the command", cxxopts::value<std::vector<std::string>>());
 
     options.parse_positional({"command", "args"});
+    options.allow_unrecognised_options();
 
     auto result = options.parse(argc, args);
 
-    if (result.count("help"))
+    // 检查是否是子命令的help请求
+    bool has_command = result.count("command");
+    bool has_help = result.count("help");
+    
+    if (has_help && !has_command)
     {
         std::cout << options.help() << std::endl;
         std::cout << "\nAvailable commands:\n";
@@ -61,8 +66,40 @@ int CliApp::Run(int argc,char* args[])
             auto& cli = it->second;
             cli->SetupOptions();
             auto& cli_options = cli->GetOptions();
-            cli_options.parse_positional({"args"});
-            auto cli_result = cli_options.parse(argc, args);
+            
+            // 检查是否有--help参数
+            bool has_help = false;
+            for (int i = 1; i < argc; ++i) {
+                if (std::string(args[i]) == "--help" || std::string(args[i]) == "-h") {
+                    has_help = true;
+                    break;
+                }
+            }
+            
+            if (has_help) {
+                std::cout << cli_options.help() << std::endl;
+                return 0;
+            }
+            
+            // 收集命令后的参数
+            std::vector<std::string> cli_args;
+            bool found_command = false;
+            for (int i = 1; i < argc; ++i) {
+                if (std::string(args[i]) == command) {
+                    found_command = true;
+                } else if (found_command) {
+                    cli_args.push_back(std::string(args[i]));
+                }
+            }
+            
+            // 构建新的argv
+            std::vector<char*> new_argv;
+            new_argv.push_back(const_cast<char*>(args[0])); // 程序名
+            for (auto& arg : cli_args) {
+                new_argv.push_back(const_cast<char*>(arg.c_str()));
+            }
+            
+            auto cli_result = cli_options.parse(new_argv.size(), new_argv.data());
             return cli->Run(cli_result);
         }
         else
